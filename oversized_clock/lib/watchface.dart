@@ -1,15 +1,7 @@
-// Copyright 2019 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
 import 'dart:async';
-import 'dart:developer';
-
 import 'package:flutter_clock_helper/model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:oversized_clock/floating_container.dart';
-import 'package:vector_math/vector_math_64.dart' hide Colors;
 
 enum _Element {
   background,
@@ -86,12 +78,6 @@ class _WatchfaceState extends State<Watchface>
             Duration(milliseconds: _dateTime.millisecond),
         _updateTime,
       );
-      // Update once per second, but make sure to do it at the beginning of each
-      // new second, so that the clock is accurate.
-      // _timer = Timer(
-      //   Duration(seconds: 1) - Duration(milliseconds: _dateTime.millisecond),
-      //   _updateTime,
-      // );
     });
   }
 
@@ -100,16 +86,17 @@ class _WatchfaceState extends State<Watchface>
     final colors = Theme.of(context).brightness == Brightness.light
         ? _lightTheme
         : _darkTheme;
-    final hour = '06';
-    // DateFormat(widget.model.is24HourFormat ? 'HH' : 'hh').format(_dateTime);
-    final minute = '05';
-    // DateFormat('mm').format(_dateTime);
+    final hour = // '22';
+        DateFormat(widget.model.is24HourFormat ? 'HH' : 'hh').format(_dateTime);
+    final minute = // '22';
+        DateFormat('mm').format(_dateTime);
+
     final defaultStyle = TextStyle(
       color: colors[_Element.text],
-      fontFamily: 'AdventPro', // DolceVitaLight vertigup AdventPro
+      fontFamily: 'vertigup', // DolceVitaLight vertigup AdventPro
       fontWeight: FontWeight.w100,
       height: 1,
-      fontSize: 1000,
+      fontSize: 1400,
       // shadows: [
       //   Shadow(
       //     blurRadius: 3,
@@ -119,89 +106,132 @@ class _WatchfaceState extends State<Watchface>
       // ],
     );
 
-    final weatherText = ' '; //'Mountain View 10°C';
-    final dateText = ' '; //'Thursday, December 31';
+    return FittedBox(
+        fit: BoxFit.scaleDown,
+        child: Container(
+            width: 5000,
+            height: 3000,
+            child: DefaultTextStyle(
+                style: defaultStyle,
+                child: Stack(
+                  children: <Widget>[
+                    ///////
+                    Positioned(
+                      bottom: 1500,
+                      left: 100,
+                      width: 1200,
+                      child: Text('o',
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                              color: Colors.white12, fontFamily: 'vertiup2')),
+                    ),
+                    /////
+                    Positioned(
+                      bottom: 1500,
+                      left: 1300,
+                      width: 1200,
+                      child: Text('v',
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                              color: Colors.white12, fontFamily: 'vertiup2')),
+                    ),
 
-    final hourMinuteFlex = 8;
-    final smallTextFlex = 1;
-    final gapFlex = 1;
+                    Positioned(
+                      bottom: 1500,
+                      left: 2500,
+                      width: 1200,
+                      child: Text('e',
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                              color: Colors.white12, fontFamily: 'vertiup2')),
+                    ),
 
-    return Container(
-      padding: EdgeInsets.all(20),
-      // child: DefaultTextStyle(style: defaultStyle, child: Text(text))
-      child: DefaultTextStyle(
-          style: defaultStyle,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Expanded(
-                  flex: 1,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Expanded(
-                        flex: hourMinuteFlex,
-                        child: FittedBox(
-                            fit: BoxFit.scaleDown,
-                            child:
-                                Text(hour, style: TextStyle(fontSize: 10000))),
+                    Positioned(
+                      bottom: 1500,
+                      left: 3700,
+                      width: 1200,
+                      child: Text('r',
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                              color: Colors.white12, fontFamily: 'vertiup2')),
+                    ),
+
+                    Positioned(
+                      bottom: 100,
+                      left: 100,
+                      width: 1200,
+                      child: Text('f',
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                              color: Colors.white12, fontFamily: 'vertiup2')),
+                    ),
+                    /////
+                    Positioned(
+                      bottom: 100,
+                      left: 1300,
+                      width: 1200,
+                      child: Text('l',
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                              color: Colors.white12, fontFamily: 'vertiup2')),
+                    ),
+
+                    Positioned(
+                      bottom: 100,
+                      left: 2500,
+                      width: 1200,
+                      child: Text('o',
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                              color: Colors.white12, fontFamily: 'vertiup2')),
+                    ),
+
+                    Positioned(
+                      bottom: 100,
+                      left: 3700,
+                      width: 1200,
+                      child: Text('w',
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                              color: Colors.white12, fontFamily: 'vertiup2')),
+                    ),
+
+                    ///
+                    /// first row
+                    Positioned(
+                      bottom: 1500,
+                      left: 150,
+                      width: 1200,
+                      child: Text(
+                        hour[0],
+                        textAlign: TextAlign.right,
                       ),
-                      Expanded(
-                          flex: smallTextFlex,
-                          child: FittedBox(
-                              fit: BoxFit.scaleDown, child: Text(weatherText))),
-                      Expanded(flex: gapFlex, child: Text('')),
-                    ],
-                  )),
-              Expanded(flex: 0, child: Container(width: 50, child: Text(''))),
-              Expanded(
-                  flex: 1,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      Expanded(flex: gapFlex, child: Text('')),
-                      Expanded(
-                        flex: smallTextFlex,
-                        child: FittedBox(
-                            fit: BoxFit.scaleDown, child: Text(dateText)),
+                    ),
+                    Positioned(
+                      bottom: 1500,
+                      left: 1300,
+                      width: 1200,
+                      child: Text(
+                        hour[1],
+                        textAlign: TextAlign.left,
                       ),
-                      Expanded(
-                        flex: hourMinuteFlex,
-                        child: FittedBox(
-                            alignment: Alignment.bottomCenter,
-                            fit: BoxFit.scaleDown,
-                            child: ClipRect(
-                                clipper: _CustomRect(),
-                                child: Text(minute,
-                                    style: TextStyle(fontSize: 10000)))),
-                      )
-                    ],
-                  ))
-            ],
-          )
+                    ),
 
-          // child: Stack(
-          //   children: <Widget>[
-          //     FittedBox(fit: BoxFit.fitHeight, child: Text(hour)),
-          //     // Positioned(left: 20, top: offset, child: Text(hour)),
-          //     // Positioned(right: 20, bottom: offset, child: Text(minute))
-          //   ],
-          // ),
-          ),
-    );
-  }
-}
+                    // second row
+                    Positioned(
+                      bottom: 100,
+                      left: 2550,
+                      width: 1200,
+                      child: Text(minute[0], textAlign: TextAlign.right),
+                    ),
 
-class _CustomRect extends CustomClipper<Rect> {
-  @override
-  Rect getClip(Size size) {
-    return Rect.fromLTWH(0, size.height * 0.05, size.width, size.height * 0.8);
-  }
-
-  @override
-  bool shouldReclip(_CustomRect oldClipper) {
-    return true;
+                    Positioned(
+                      bottom: 100,
+                      left: 3700,
+                      width: 1200,
+                      child: Text(minute[1], textAlign: TextAlign.left),
+                    ),
+                  ],
+                ))));
   }
 }
