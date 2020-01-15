@@ -91,6 +91,8 @@ class _WatchfaceState extends State<Watchface>
     final minute = // '22';
         DateFormat('mm').format(_dateTime);
 
+    final day = DateFormat('E').format(_dateTime);
+
     final defaultStyle = TextStyle(
       color: colors[_Element.text],
       fontFamily: 'vertigup', // DolceVitaLight vertigup AdventPro
@@ -117,25 +119,25 @@ class _WatchfaceState extends State<Watchface>
                   children: <Widget>[
                     ///////
                     Positioned(
-                      top: -300,
-                      left: 150,
-                      width: 1200,
-                      child: Text(hour[0],
+                      top: -30,
+                      left: 100,
+                      width: 2500,
+                      child: Text(day[0],
                           textAlign: TextAlign.right,
                           style: TextStyle(
-                              fontSize: 2100,
+                              fontSize: 3075,
                               color: Colors.white12,
                               fontFamily: 'vertiup2')),
                     ),
                     /////
                     Positioned(
-                      top: -300,
-                      left: 1300,
-                      width: 1200,
-                      child: Text(hour[1],
+                      top: -30,
+                      left: 2450,
+                      width: 2500,
+                      child: Text(day[1],
                           textAlign: TextAlign.left,
                           style: TextStyle(
-                              fontSize: 2100,
+                              fontSize: 3075,
                               color: Colors.white12,
                               fontFamily: 'vertiup2')),
                     ),
@@ -180,29 +182,29 @@ class _WatchfaceState extends State<Watchface>
                     //           color: Colors.white12, fontFamily: 'vertiup2')),
                     // ),
 
-                    Positioned(
-                      bottom: -300,
-                      left: 2550,
-                      width: 1200,
-                      child: Text(minute[0],
-                          textAlign: TextAlign.right,
-                          style: TextStyle(
-                              fontSize: 2100,
-                              color: Colors.white12,
-                              fontFamily: 'vertiup2')),
-                    ),
+                    // Positioned(
+                    //   bottom: -300,
+                    //   left: 2550,
+                    //   width: 1200,
+                    //   child: Text(minute[0],
+                    //       textAlign: TextAlign.right,
+                    //       style: TextStyle(
+                    //           fontSize: 2100,
+                    //           color: Colors.white12,
+                    //           fontFamily: 'vertiup2')),
+                    // ),
 
-                    Positioned(
-                      bottom: -300,
-                      left: 3700,
-                      width: 1200,
-                      child: Text(minute[1],
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                              fontSize: 2100,
-                              color: Colors.white12,
-                              fontFamily: 'vertiup2')),
-                    ),
+                    // Positioned(
+                    //   bottom: -300,
+                    //   left: 3700,
+                    //   width: 1200,
+                    //   child: Text(minute[1],
+                    //       textAlign: TextAlign.left,
+                    //       style: TextStyle(
+                    //           fontSize: 2100,
+                    //           color: Colors.white12,
+                    //           fontFamily: 'vertiup2')),
+                    // ),
 
                     ///
                     /// first row
