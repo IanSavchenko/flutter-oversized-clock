@@ -117,89 +117,97 @@ class _WatchfaceState extends State<Watchface>
                   children: <Widget>[
                     ///////
                     Positioned(
-                      bottom: 1500,
-                      left: 100,
+                      top: -300,
+                      left: 150,
                       width: 1200,
-                      child: Text('o',
-                          textAlign: TextAlign.left,
+                      child: Text(hour[0],
+                          textAlign: TextAlign.right,
                           style: TextStyle(
-                              color: Colors.white12, fontFamily: 'vertiup2')),
+                              fontSize: 2100,
+                              color: Colors.white12,
+                              fontFamily: 'vertiup2')),
                     ),
                     /////
                     Positioned(
-                      bottom: 1500,
+                      top: -300,
                       left: 1300,
                       width: 1200,
-                      child: Text('v',
+                      child: Text(hour[1],
                           textAlign: TextAlign.left,
                           style: TextStyle(
-                              color: Colors.white12, fontFamily: 'vertiup2')),
+                              fontSize: 2100,
+                              color: Colors.white12,
+                              fontFamily: 'vertiup2')),
                     ),
 
+                    // Positioned(
+                    //   bottom: 1500,
+                    //   left: 2500,
+                    //   width: 1200,
+                    //   child: Text('e',
+                    //       textAlign: TextAlign.left,
+                    //       style: TextStyle(
+                    //           color: Colors.white12, fontFamily: 'vertiup2')),
+                    // ),
+
+                    // Positioned(
+                    //   bottom: 1500,
+                    //   left: 3700,
+                    //   width: 1200,
+                    //   child: Text('r',
+                    //       textAlign: TextAlign.left,
+                    //       style: TextStyle(
+                    //           color: Colors.white12, fontFamily: 'vertiup2')),
+                    // ),
+
+                    // Positioned(
+                    //   bottom: 100,
+                    //   left: 100,
+                    //   width: 1200,
+                    //   child: Text('f',
+                    //       textAlign: TextAlign.left,
+                    //       style: TextStyle(
+                    //           color: Colors.white12, fontFamily: 'vertiup2')),
+                    // ),
+                    // /////
+                    // Positioned(
+                    //   bottom: 100,
+                    //   left: 1300,
+                    //   width: 1200,
+                    //   child: Text('l',
+                    //       textAlign: TextAlign.left,
+                    //       style: TextStyle(
+                    //           color: Colors.white12, fontFamily: 'vertiup2')),
+                    // ),
+
                     Positioned(
-                      bottom: 1500,
-                      left: 2500,
+                      bottom: -300,
+                      left: 2550,
                       width: 1200,
-                      child: Text('e',
-                          textAlign: TextAlign.left,
+                      child: Text(minute[0],
+                          textAlign: TextAlign.right,
                           style: TextStyle(
-                              color: Colors.white12, fontFamily: 'vertiup2')),
+                              fontSize: 2100,
+                              color: Colors.white12,
+                              fontFamily: 'vertiup2')),
                     ),
 
                     Positioned(
-                      bottom: 1500,
+                      bottom: -300,
                       left: 3700,
                       width: 1200,
-                      child: Text('r',
+                      child: Text(minute[1],
                           textAlign: TextAlign.left,
                           style: TextStyle(
-                              color: Colors.white12, fontFamily: 'vertiup2')),
-                    ),
-
-                    Positioned(
-                      bottom: 100,
-                      left: 100,
-                      width: 1200,
-                      child: Text('f',
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                              color: Colors.white12, fontFamily: 'vertiup2')),
-                    ),
-                    /////
-                    Positioned(
-                      bottom: 100,
-                      left: 1300,
-                      width: 1200,
-                      child: Text('l',
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                              color: Colors.white12, fontFamily: 'vertiup2')),
-                    ),
-
-                    Positioned(
-                      bottom: 100,
-                      left: 2500,
-                      width: 1200,
-                      child: Text('o',
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                              color: Colors.white12, fontFamily: 'vertiup2')),
-                    ),
-
-                    Positioned(
-                      bottom: 100,
-                      left: 3700,
-                      width: 1200,
-                      child: Text('w',
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                              color: Colors.white12, fontFamily: 'vertiup2')),
+                              fontSize: 2100,
+                              color: Colors.white12,
+                              fontFamily: 'vertiup2')),
                     ),
 
                     ///
                     /// first row
                     Positioned(
-                      bottom: 1500,
+                      top: 100,
                       left: 150,
                       width: 1200,
                       child: Text(
@@ -208,7 +216,7 @@ class _WatchfaceState extends State<Watchface>
                       ),
                     ),
                     Positioned(
-                      bottom: 1500,
+                      top: 100,
                       left: 1300,
                       width: 1200,
                       child: Text(
