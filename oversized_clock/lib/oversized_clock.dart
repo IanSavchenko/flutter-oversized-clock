@@ -46,7 +46,7 @@ class _OversizedClockState extends State<OversizedClock> {
   @override
   Widget build(BuildContext context) {
     return FloatingContainer(
-        scale: 1,
+        scale: 3,
         child: Stack(
           children: <Widget>[Background(), Watchface(widget.model)],
         ));
