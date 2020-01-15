@@ -21,7 +21,7 @@ class _FloatingContainerState extends State<FloatingContainer>
   Animation<Vector2> _translateAnimation;
   AnimationController _translateController;
 
-  final Duration _translateDuration = const Duration(seconds: 40);
+  final Duration _translateDuration = const Duration(seconds: 60);
 
   void _initTranslateAnimation() {
     final renderBox =
@@ -48,17 +48,12 @@ class _FloatingContainerState extends State<FloatingContainer>
                 setState(() {
                   // The state that has changed here is the animation object’s value.
                 });
-              })
-              ..addStatusListener((status) {
-                // going back and forth
-                // if (status == AnimationStatus.completed) {
-                //   _translateController.reverse();
-                // }
-
-                // if (status == AnimationStatus.dismissed) {
-                //   _translateController.forward();
-                // }
               });
+
+    if (_translateController.duration.inSeconds % 60 == 0) {
+      // if the cycle is by minute, trying to synchronize animation with current second
+      _translateController.value = DateTime.now().second / 59;
+    }
 
     // starting animation
     _translateController.repeat();
@@ -105,29 +100,6 @@ class _FloatingContainerState extends State<FloatingContainer>
   }
 }
 
-class _TranslateVector2Tween extends Animatable<Vector2> {
-  _TranslateVector2Tween({Vector2 this.begin, Vector2 this.end}) {
-    xTween = Tween(begin: begin.x, end: end.x)
-        .chain(CurveTween(curve: Curves.linear));
-    yTween = Tween(begin: begin.y, end: end.y)
-        .chain(CurveTween(curve: Curves.easeInCubic));
-  }
-
-  final Vector2 begin;
-  final Vector2 end;
-  Animatable<double> xTween;
-  Animatable<double> yTween;
-
-  @override
-  Vector2 transform(double t) {
-    return Vector2(xTween.transform(t), yTween.transform(t));
-  }
-
-  @override
-  String toString() =>
-      '$runtimeType(begin: $begin, end: $end, xTween: $xTween, yTween: $yTween)';
-}
-
 // https://www.desmos.com/calculator/1gwixpvfn8
 class _TranslateVector2EllipseTween extends Animatable<Vector2> {
   _TranslateVector2EllipseTween({Vector2 this.begin, Vector2 this.end}) {
@@ -139,7 +111,7 @@ class _TranslateVector2EllipseTween extends Animatable<Vector2> {
   final Vector2 begin;
   final Vector2 end;
 
-  final u = 0.3;
+  final u = 0.7;
   final v = 0;
 
   Tween<double> paramTween;
