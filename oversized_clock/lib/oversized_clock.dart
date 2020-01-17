@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:oversized_clock/background.dart';
 import 'package:oversized_clock/floating_container.dart';
 import 'package:oversized_clock/watchface.dart';
+import 'package:vector_math/vector_math_64.dart';
 
 class OversizedClock extends StatefulWidget {
   const OversizedClock(this.model);
@@ -47,6 +48,8 @@ class _OversizedClockState extends State<OversizedClock> {
   Widget build(BuildContext context) {
     return FloatingContainer(
         scale: 3,
+        duration: Duration(seconds: 60),
+        ellipseParams: Vector2(0, 0.7),
         child: Stack(
           children: <Widget>[Background(), Watchface(widget.model)],
         ));

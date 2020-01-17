@@ -1,16 +1,23 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:vector_math/vector_math_64.dart' hide Colors;
+import 'ellipse_tween.dart';
 
 class FloatingContainer extends StatefulWidget {
-  FloatingContainer({Key key, @required this.child, @required this.scale})
-      : super(key: key);
-
   final Widget child;
   final double scale;
-  final GlobalKey _rootWidgetKey = GlobalKey();
+  final Duration duration;
+  final Vector2 ellipseParams;
+  final GlobalKey _rootWidgetKey = GlobalKey(); // used for getting widget size
+
+  FloatingContainer(
+      {Key key,
+      @required this.child,
+      @required double scale,
+      @required this.duration,
+      @required this.ellipseParams})
+      : scale = scale.clamp(1, double.nan),
+        super(key: key);
 
   @override
   _FloatingContainerState createState() => _FloatingContainerState();
@@ -18,118 +25,111 @@ class FloatingContainer extends StatefulWidget {
 
 class _FloatingContainerState extends State<FloatingContainer>
     with TickerProviderStateMixin {
-  Animation<Vector2> _translateAnimation;
-  AnimationController _translateController;
+  Animation<Vector2> _animation;
+  AnimationController _controller;
 
-  final Duration _translateDuration = const Duration(seconds: 60);
-
-  void _initTranslateAnimation() {
-    final renderBox =
-        this.widget._rootWidgetKey.currentContext.findRenderObject();
-    final widgetSize = renderBox.paintBounds;
-    final scale = widget.scale.clamp(1, double.infinity);
-    final endVector2 = Vector2(
-        (widgetSize.width - widgetSize.width / scale) * scale,
-        (widgetSize.height - widgetSize.height / scale) * scale);
-
-    if (_translateController != null) {
-      _translateController.dispose();
+  void _initAnimationController() {
+    if (_controller != null) {
+      _controller.dispose();
     }
 
-    _translateController = AnimationController(
-        duration: _translateDuration,
-        vsync: this,
-        reverseDuration: _translateDuration);
+    _controller =
+        AnimationController(duration: this.widget.duration, vsync: this);
 
-    _translateAnimation =
-        _TranslateVector2EllipseTween(begin: Vector2.zero(), end: endVector2)
-            .animate(_translateController)
-              ..addListener(() {
-                setState(() {
-                  // The state that has changed here is the animation object’s value.
-                });
-              });
-
-    if (_translateController.duration.inSeconds % 60 == 0) {
-      // if the cycle is by minute, trying to synchronize animation with current second
-      _translateController.value = DateTime.now().second / 59;
+    // if the cycle is by minute, trying to synchronize animation with current second
+    if (_controller.duration.inSeconds % 60 == 0) {
+      _controller.value = DateTime.now().second / 59;
     }
 
-    // starting animation
-    _translateController.repeat();
+    _controller.repeat();
+  }
+
+  Rect _getWidgetRect() {
+    return this
+        .widget
+        ._rootWidgetKey
+        .currentContext
+        .findRenderObject()
+        .paintBounds;
+  }
+
+  EllipseTween _getEllipseTween(Rect rect) {
+    final scale = this.widget.scale;
+    final begin = Vector2.zero();
+    final end = Vector2((rect.width - rect.width / scale) * scale,
+        (rect.height - rect.height / scale) * scale);
+
+    final tween = EllipseTween(
+        begin: begin,
+        end: end,
+        xParam: this.widget.ellipseParams.x,
+        yParam: this.widget.ellipseParams.y);
+
+    return tween;
+  }
+
+  void _updateAnimation() {
+    // this func must be run after the first frame was rendered
+    // this makes it possible to get widget rect,
+    // so we can start "translating" it
+    //
+    // all this is because of translation transformation
+    // requiring absolute values in logical pixels
+    //
+    // this code has to be rerun when size of this widget (FloatingContainer) changes
+
+    final widgetRect = _getWidgetRect();
+    final ellipseTween = _getEllipseTween(widgetRect);
+
+    _animation = ellipseTween.animate(_controller);
+    setState(() => {}); // to start using new animation
+  }
+
+  bool _onSizeChangedNotification(_notification) {
+    _updateAnimation();
+    return true;
   }
 
   @override
   void initState() {
     super.initState();
+    _initAnimationController();
 
-    SchedulerBinding.instance.addPostFrameCallback((_duration) {
-      // start animations only after first render to get widget size
-      _initTranslateAnimation();
+    SchedulerBinding.instance.addPostFrameCallback((_renderDuration) {
+      // init animations only after first render
+      _updateAnimation();
     });
   }
 
   @override
   void dispose() {
-    _translateController.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final scale = widget.scale.clamp(1, double.infinity);
-
-    var translateV3 = _translateAnimation != null
-        ? Vector3(-_translateAnimation.value.x, -_translateAnimation.value.y, 0)
-        : Vector3.zero();
-    var rotationQ = Quaternion.identity();
-    var scaleV3 = Vector3(scale, scale, 1);
-
-    var transformM4 = Matrix4.compose(translateV3, rotationQ, scaleV3);
+    final rotationQ = Quaternion.identity();
+    final scaleV3 = Vector3(this.widget.scale, this.widget.scale, 1);
 
     return NotificationListener<SizeChangedLayoutNotification>(
+      onNotification: _onSizeChangedNotification,
       child: SizeChangedLayoutNotifier(
           child: ClipRect(
               key: this.widget._rootWidgetKey,
-              child: Container(transform: transformM4, child: widget.child))),
-      onNotification: (_notification) {
-        _initTranslateAnimation();
-        return true;
-      },
+              child: AnimatedBuilder(
+                animation: _controller,
+                child: this.widget.child,
+                builder: (_, preBuiltChild) {
+                  final translateV3 = _animation == null // first frame case
+                      ? Vector3.zero()
+                      : Vector3(-_animation.value.x, -_animation.value.y, 0);
+                  final transformM4 =
+                      Matrix4.compose(translateV3, rotationQ, scaleV3);
+                  return Container(
+                      transform: transformM4, child: preBuiltChild);
+                },
+              ))),
     );
   }
-}
-
-// https://www.desmos.com/calculator/1gwixpvfn8
-class _TranslateVector2EllipseTween extends Animatable<Vector2> {
-  _TranslateVector2EllipseTween({Vector2 this.begin, Vector2 this.end}) {
-    width = end.x - begin.x;
-    height = end.y - begin.y;
-    paramTween = Tween(begin: -pi, end: pi);
-  }
-
-  final Vector2 begin;
-  final Vector2 end;
-
-  final u = 0.7;
-  final v = 0;
-
-  Tween<double> paramTween;
-
-  double width;
-  double height;
-
-  @override
-  Vector2 transform(double t) {
-    t = -paramTween.transform(t); // minus changes the direction of rotation
-
-    var x = (width / 2) * (1 + sin(t + u));
-    var y = (height / 2) * (1 + cos(t + v));
-
-    return Vector2(x, y);
-  }
-
-  @override
-  String toString() =>
-      '$runtimeType(begin: $begin, end: $end, width: $width, height: $height)';
 }
