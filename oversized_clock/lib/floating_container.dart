@@ -82,7 +82,11 @@ class _FloatingContainerState extends State<FloatingContainer>
     final ellipseTween = _getEllipseTween(widgetRect);
 
     _animation = ellipseTween.animate(_controller);
-    setState(() => {}); // to start using new animation
+    SchedulerBinding.instance.addPostFrameCallback((_renderDuration) {
+      // postFrameCallback is a safer place to do this,
+      // because setState() may end up with an error on widget resize notification
+      setState(() => {}); // to start using new animation
+    });
   }
 
   bool _onSizeChangedNotification(_notification) {
