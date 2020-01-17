@@ -32,7 +32,7 @@ class Watchface extends StatefulWidget {
 
 class _WatchfaceState extends State<Watchface>
     with SingleTickerProviderStateMixin {
-  DateTime _dateTime = DateTime.now();
+  DateTime _now = DateTime.now();
   Timer _timer;
 
   @override
@@ -69,11 +69,11 @@ class _WatchfaceState extends State<Watchface>
 
   void _updateTime() {
     setState(() {
-      _dateTime = DateTime.now();
+      _now = DateTime.now();
       _timer = Timer(
         Duration(minutes: 1) -
-            Duration(seconds: _dateTime.second) -
-            Duration(milliseconds: _dateTime.millisecond),
+            Duration(seconds: _now.second) -
+            Duration(milliseconds: _now.millisecond),
         _updateTime,
       );
     });
@@ -85,9 +85,11 @@ class _WatchfaceState extends State<Watchface>
         ? _lightTheme
         : _darkTheme;
     var hour =
-        DateFormat(widget.model.is24HourFormat ? 'HH' : 'hh').format(_dateTime);
-    var minute = DateFormat('mm').format(_dateTime);
-    var weekDay = DateFormat('E').format(_dateTime).toUpperCase();
+        DateFormat(widget.model.is24HourFormat ? 'HH' : 'hh').format(_now);
+    var minute = DateFormat('mm').format(_now);
+    var weekDay = DateFormat('E').format(_now).toUpperCase();
+    var frontSemanticsValue =
+        DateFormat(widget.model.is24HourFormat ? 'Hm' : 'jm').format(_now);
 
     // debug
     // hour = '22';
@@ -117,79 +119,79 @@ class _WatchfaceState extends State<Watchface>
         child: Container(
             width: 5000,
             height: 3000,
-            child: DefaultTextStyle(
-                style: frontStyle,
+            child: Stack(children: <Widget>[
+              // bottom layer: two big letters representing week day
+              // pretty-much decorative
+              DefaultTextStyle(
+                style: backStyle,
                 child: Stack(
                   children: <Widget>[
-                    // bottom layer: two big letters representing week day
-                    // pretty-much decorative
-                    Opacity(
-                      opacity: 1,
-                      child: DefaultTextStyle(
-                        style: backStyle,
-                        child: Stack(
-                          children: <Widget>[
-                            Positioned(
-                              top: -350,
-                              left: -150,
-                              child: Text(
-                                weekDay[0],
-                                textAlign: TextAlign.right,
-                              ),
-                            ),
-                            Positioned(
-                              top: -350,
-                              left: 3000,
-                              child: Text(
-                                weekDay[1],
-                                textAlign: TextAlign.left,
-                              ),
-                            )
-                          ],
-                        ),
+                    Positioned(
+                      top: -350,
+                      left: -150,
+                      child: Text(
+                        weekDay[0],
+                        textAlign: TextAlign.right,
                       ),
                     ),
-
-                    // front layer: two rows of numbers representing hour and minute
-                    Stack(
-                      children: <Widget>[
-                        // top row
-                        Positioned(
-                          top: -50,
-                          left: 300,
-                          width: 1200,
-                          child: Text(
-                            hour[0],
-                            textAlign: TextAlign.right,
-                          ),
-                        ),
-                        Positioned(
-                          top: -50,
-                          left: 1450,
-                          width: 1200,
-                          child: Text(
-                            hour[1],
-                            textAlign: TextAlign.left,
-                          ),
-                        ),
-
-                        // second row
-                        Positioned(
-                          bottom: -50,
-                          left: 2300,
-                          width: 1200,
-                          child: Text(minute[0], textAlign: TextAlign.right),
-                        ),
-
-                        Positioned(
-                          bottom: -50,
-                          left: 3450,
-                          width: 1200,
-                          child: Text(minute[1], textAlign: TextAlign.left),
-                        ),
-                      ],
+                    Positioned(
+                      top: -350,
+                      left: 3000,
+                      child: Text(
+                        weekDay[1],
+                        textAlign: TextAlign.left,
+                      ),
                     )
                   ],
-                ))));
+                ),
+              ),
+
+              // front layer: two rows of numbers representing hour and minute
+              Semantics(
+                  label: 'Current time',
+                  value: frontSemanticsValue,
+                  container: true,
+                  excludeSemantics: true,
+                  child: DefaultTextStyle(
+                      style: frontStyle,
+                      child: Stack(
+                        children: <Widget>[
+                          // top row
+                          Positioned(
+                            top: -50,
+                            left: 300,
+                            width: 1200,
+                            child: Text(
+                              hour[0],
+                              textAlign: TextAlign.right,
+                            ),
+                          ),
+                          Positioned(
+                            top: -50,
+                            left: 1450,
+                            width: 1200,
+                            child: Text(
+                              hour[1],
+                              textAlign: TextAlign.left,
+                            ),
+                          ),
+
+                          // second row
+                          Positioned(
+                            bottom: -50,
+                            left: 2300,
+                            width: 1200,
+                            child: Text(minute[0], textAlign: TextAlign.right),
+                          ),
+
+                          Positioned(
+                            bottom: -50,
+                            left: 3450,
+                            width: 1200,
+                            child: Text(minute[1], textAlign: TextAlign.left),
+                          ),
+                        ],
+                      )))
+            ])));
   }
 }
