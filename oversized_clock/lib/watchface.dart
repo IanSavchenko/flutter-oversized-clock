@@ -70,8 +70,6 @@ class _WatchfaceState extends State<Watchface>
   void _updateTime() {
     setState(() {
       _dateTime = DateTime.now();
-      // Update once per minute. If you want to update every second, use the
-      // following code.
       _timer = Timer(
         Duration(minutes: 1) -
             Duration(seconds: _dateTime.second) -
@@ -86,19 +84,22 @@ class _WatchfaceState extends State<Watchface>
     final colors = Theme.of(context).brightness == Brightness.light
         ? _lightTheme
         : _darkTheme;
-    final hour = // '22';
+    var hour =
         DateFormat(widget.model.is24HourFormat ? 'HH' : 'hh').format(_dateTime);
-    final minute = // '22';
-        DateFormat('mm').format(_dateTime);
+    var minute = DateFormat('mm').format(_dateTime);
+    var weekDay = DateFormat('E').format(_dateTime).toUpperCase();
 
-    final day = DateFormat('E').format(_dateTime);
+    // debug
+    // hour = '22';
+    // minute = '44';
+    // weekDay = 'SU';
 
-    final defaultStyle = TextStyle(
+    final frontStyle = TextStyle(
       color: colors[_Element.text],
-      fontFamily: 'vertigup', // DolceVitaLight vertigup AdventPro
+      fontFamily: 'vertigup',
       fontWeight: FontWeight.w100,
       height: 1,
-      fontSize: 1400,
+      fontSize: 1650,
       // shadows: [
       //   Shadow(
       //     blurRadius: 3,
@@ -108,139 +109,86 @@ class _WatchfaceState extends State<Watchface>
       // ],
     );
 
+    final backStyle = TextStyle(
+        color: Colors.white24, fontFamily: 'vertiup2', fontSize: 3600);
+
     return FittedBox(
         fit: BoxFit.scaleDown,
         child: Container(
             width: 5000,
             height: 3000,
             child: DefaultTextStyle(
-                style: defaultStyle,
+                style: frontStyle,
                 child: Stack(
                   children: <Widget>[
-                    ///////
-                    Positioned(
-                      top: -30,
-                      left: 100,
-                      width: 2500,
-                      child: Text(day[0],
-                          textAlign: TextAlign.right,
-                          style: TextStyle(
-                              fontSize: 3075,
-                              color: Colors.white12,
-                              fontFamily: 'vertiup2')),
-                    ),
-                    /////
-                    Positioned(
-                      top: -30,
-                      left: 2450,
-                      width: 2500,
-                      child: Text(day[1],
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                              fontSize: 3075,
-                              color: Colors.white12,
-                              fontFamily: 'vertiup2')),
-                    ),
-
-                    // Positioned(
-                    //   bottom: 1500,
-                    //   left: 2500,
-                    //   width: 1200,
-                    //   child: Text('e',
-                    //       textAlign: TextAlign.left,
-                    //       style: TextStyle(
-                    //           color: Colors.white12, fontFamily: 'vertiup2')),
-                    // ),
-
-                    // Positioned(
-                    //   bottom: 1500,
-                    //   left: 3700,
-                    //   width: 1200,
-                    //   child: Text('r',
-                    //       textAlign: TextAlign.left,
-                    //       style: TextStyle(
-                    //           color: Colors.white12, fontFamily: 'vertiup2')),
-                    // ),
-
-                    // Positioned(
-                    //   bottom: 100,
-                    //   left: 100,
-                    //   width: 1200,
-                    //   child: Text('f',
-                    //       textAlign: TextAlign.left,
-                    //       style: TextStyle(
-                    //           color: Colors.white12, fontFamily: 'vertiup2')),
-                    // ),
-                    // /////
-                    // Positioned(
-                    //   bottom: 100,
-                    //   left: 1300,
-                    //   width: 1200,
-                    //   child: Text('l',
-                    //       textAlign: TextAlign.left,
-                    //       style: TextStyle(
-                    //           color: Colors.white12, fontFamily: 'vertiup2')),
-                    // ),
-
-                    // Positioned(
-                    //   bottom: -300,
-                    //   left: 2550,
-                    //   width: 1200,
-                    //   child: Text(minute[0],
-                    //       textAlign: TextAlign.right,
-                    //       style: TextStyle(
-                    //           fontSize: 2100,
-                    //           color: Colors.white12,
-                    //           fontFamily: 'vertiup2')),
-                    // ),
-
-                    // Positioned(
-                    //   bottom: -300,
-                    //   left: 3700,
-                    //   width: 1200,
-                    //   child: Text(minute[1],
-                    //       textAlign: TextAlign.left,
-                    //       style: TextStyle(
-                    //           fontSize: 2100,
-                    //           color: Colors.white12,
-                    //           fontFamily: 'vertiup2')),
-                    // ),
-
-                    ///
-                    /// first row
-                    Positioned(
-                      top: 100,
-                      left: 150,
-                      width: 1200,
-                      child: Text(
-                        hour[0],
-                        textAlign: TextAlign.right,
-                      ),
-                    ),
-                    Positioned(
-                      top: 100,
-                      left: 1300,
-                      width: 1200,
-                      child: Text(
-                        hour[1],
-                        textAlign: TextAlign.left,
+                    // bottom layer: two big letters representing week day
+                    // pretty-much decorative
+                    Opacity(
+                      opacity: 1,
+                      child: DefaultTextStyle(
+                        style: backStyle,
+                        child: Stack(
+                          children: <Widget>[
+                            Positioned(
+                              top: -350,
+                              left: -150,
+                              child: Text(
+                                weekDay[0],
+                                textAlign: TextAlign.right,
+                              ),
+                            ),
+                            Positioned(
+                              top: -350,
+                              left: 3000,
+                              child: Text(
+                                weekDay[1],
+                                textAlign: TextAlign.left,
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
 
-                    // second row
-                    Positioned(
-                      bottom: 100,
-                      left: 2550,
-                      width: 1200,
-                      child: Text(minute[0], textAlign: TextAlign.right),
-                    ),
+                    // front layer: two rows of numbers representing hour and minute
+                    Stack(
+                      children: <Widget>[
+                        // top row
+                        Positioned(
+                          top: -50,
+                          left: 300,
+                          width: 1200,
+                          child: Text(
+                            hour[0],
+                            textAlign: TextAlign.right,
+                          ),
+                        ),
+                        Positioned(
+                          top: -50,
+                          left: 1450,
+                          width: 1200,
+                          child: Text(
+                            hour[1],
+                            textAlign: TextAlign.left,
+                          ),
+                        ),
 
-                    Positioned(
-                      bottom: 100,
-                      left: 3700,
-                      width: 1200,
-                      child: Text(minute[1], textAlign: TextAlign.left),
-                    ),
+                        // second row
+                        Positioned(
+                          bottom: -50,
+                          left: 2300,
+                          width: 1200,
+                          child: Text(minute[0], textAlign: TextAlign.right),
+                        ),
+
+                        Positioned(
+                          bottom: -50,
+                          left: 3450,
+                          width: 1200,
+                          child: Text(minute[1], textAlign: TextAlign.left),
+                        ),
+                      ],
+                    )
                   ],
                 ))));
   }
