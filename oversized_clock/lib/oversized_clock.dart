@@ -49,7 +49,7 @@ class _OversizedClockState extends State<OversizedClock> {
     return FloatingContainer(
         scale: 3,
         duration: Duration(seconds: 60),
-        ellipseParams: Vector2(0, 0.7),
+        ellipseParams: Vector2(0, 0.3),
         child: Stack(
           children: <Widget>[Background(), Watchface(widget.model)],
         ));
