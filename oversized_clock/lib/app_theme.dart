@@ -15,7 +15,7 @@ class AppTheme {
   static AppTheme dark = AppTheme(backgroundColors: [
     Color.fromRGBO(0x09, 0x20, 0x3f, 1),
     Color.fromRGBO(0x53, 0x78, 0x95, 1)
-  ], frontTextColor: Colors.grey[400], backTextColor: Colors.black26);
+  ], frontTextColor: Colors.grey[200], backTextColor: Colors.black26);
 
   static AppTheme forContext(BuildContext context) {
     return Theme.of(context).brightness == Brightness.light ? light : dark;
