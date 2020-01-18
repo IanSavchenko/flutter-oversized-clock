@@ -5,6 +5,7 @@ import 'package:oversized_clock/background.dart';
 import 'package:oversized_clock/floating_container.dart';
 import 'package:oversized_clock/watchface.dart';
 import 'package:vector_math/vector_math_64.dart';
+import 'package:wakelock/wakelock.dart';
 
 class OversizedClock extends StatefulWidget {
   const OversizedClock(this.model);
@@ -19,6 +20,8 @@ class _OversizedClockState extends State<OversizedClock> {
   @override
   void initState() {
     super.initState();
+
+    Wakelock.enable();
 
     widget.model.addListener(_updateModel);
     _updateModel();
