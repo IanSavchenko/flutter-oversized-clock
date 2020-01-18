@@ -20,48 +20,11 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   fonts:
-    # demo
-    - family: PressStart2P
-      fonts:
-        - asset: third_party/PressStart2P-Regular.ttf
-    # boring
-    - family: WalkwayCondensedSemiBold
-      fonts:
-        - asset: third_party/WalkwayCondensedSemiBold.ttf
-    # fun, but wrong concept
-    - family: SquaredDisplay
-      fonts:
-        - asset: third_party/SquaredDisplay.ttf
-    # nice one, but a bit too low
     - family: vertigup
       fonts:
         - asset: third_party/vertigup.ttf
     - family: vertiup2
       fonts:
         - asset: third_party/vertiup2.ttf
-    - family: vertigo
-      fonts:
-        - asset: third_party/vertigo.ttf
-    - family: vertigo2
-      fonts:
-        - asset: third_party/vertigo2.ttf
-    # pretty good, a bit too thin
-    - family: DolceVitaLight
-      fonts:
-        - asset: third_party/DolceVitaLight.ttf
-    # no, too wide
-    - family: PoiretOne
-      fonts:
-        - asset: third_party/PoiretOne-Regular.ttf
-    # ok, a bit boring, but could work
-    - family: AdventPro
-      fonts:
-        - asset: third_party/AdventPro-ExtraLight.ttf
-    # too wide for some chars
-    - family: NixieOne 
-      fonts:
-        - asset: third_party/NixieOne-Regular.ttf
-    - family: CutiveMono
-      fonts:
-        - asset: third_party/CutiveMono-Regular.ttf
+
 
