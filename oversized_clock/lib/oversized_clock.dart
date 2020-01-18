@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:flutter_clock_helper/model.dart';
 import 'package:flutter/material.dart';
 import 'package:oversized_clock/background.dart';
@@ -46,6 +47,7 @@ class _OversizedClockState extends State<OversizedClock> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setEnabledSystemUIOverlays([]);
     return FloatingContainer(
         scale: 3,
         duration: Duration(seconds: 60),
