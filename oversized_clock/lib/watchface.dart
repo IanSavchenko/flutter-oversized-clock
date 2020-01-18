@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter_clock_helper/model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:oversized_clock/app_theme.dart';
 
 enum _Element {
   background,
@@ -81,9 +82,8 @@ class _WatchfaceState extends State<Watchface>
 
   @override
   Widget build(BuildContext context) {
-    final colors = Theme.of(context).brightness == Brightness.light
-        ? _lightTheme
-        : _darkTheme;
+    final theme = AppTheme.forContext(context);
+
     var hour =
         DateFormat(widget.model.is24HourFormat ? 'HH' : 'hh').format(_now);
     var minute = DateFormat('mm').format(_now);
@@ -96,23 +96,14 @@ class _WatchfaceState extends State<Watchface>
     // minute = '44';
     // weekDay = 'SU';
 
-    final frontStyle = TextStyle(
-      color: colors[_Element.text],
-      fontFamily: 'vertigup',
-      fontWeight: FontWeight.w100,
-      height: 1,
-      fontSize: 1650,
-      // shadows: [
-      //   Shadow(
-      //     blurRadius: 3,
-      //     color: colors[_Element.shadow],
-      //     offset: Offset(0, 0),
-      //   ),
-      // ],
-    );
+    final frontTextStyle = TextStyle(
+        color: theme.frontTextColor,
+        fontFamily: 'vertigup',
+        height: 1,
+        fontSize: 1650);
 
-    final backStyle = TextStyle(
-        color: Colors.white24, fontFamily: 'vertiup2', fontSize: 3600);
+    final backTextStyle = TextStyle(
+        color: theme.backTextColor, fontFamily: 'vertiup2', fontSize: 3600);
 
     return FittedBox(
         fit: BoxFit.scaleDown,
@@ -123,7 +114,7 @@ class _WatchfaceState extends State<Watchface>
               // bottom layer: two big letters representing week day
               // pretty-much decorative
               DefaultTextStyle(
-                style: backStyle,
+                style: backTextStyle,
                 child: Stack(
                   children: <Widget>[
                     Positioned(
@@ -153,7 +144,7 @@ class _WatchfaceState extends State<Watchface>
                   container: true,
                   excludeSemantics: true,
                   child: DefaultTextStyle(
-                      style: frontStyle,
+                      style: frontTextStyle,
                       child: Stack(
                         children: <Widget>[
                           // top row

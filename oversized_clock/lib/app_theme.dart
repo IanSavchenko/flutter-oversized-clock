@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 
 class AppTheme {
-  Color background;
-  Color text;
+  final List<Color> backgroundColors;
+  final Color frontTextColor;
+  final Color backTextColor;
 
-  AppTheme({this.background, this.text});
+  AppTheme({this.backgroundColors, this.frontTextColor, this.backTextColor});
 
-  static AppTheme light =
-      AppTheme(background: Colors.white, text: Colors.black);
+  static AppTheme light = AppTheme(backgroundColors: [
+    Color.fromRGBO(0x96, 0xde, 0xda, 1),
+    Color.fromRGBO(0x50, 0xc9, 0xc3, 1)
+  ], frontTextColor: Colors.white, backTextColor: Colors.black12);
 
-  static AppTheme dark = AppTheme(background: Colors.black, text: Colors.white);
+  static AppTheme dark = AppTheme(backgroundColors: [
+    Color.fromRGBO(0x09, 0x20, 0x3f, 1),
+    Color.fromRGBO(0x53, 0x78, 0x95, 1)
+  ], frontTextColor: Colors.grey[400], backTextColor: Colors.black26);
 
   static AppTheme forContext(BuildContext context) {
     return Theme.of(context).brightness == Brightness.light ? light : dark;
