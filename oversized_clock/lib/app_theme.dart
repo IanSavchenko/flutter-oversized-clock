@@ -8,8 +8,8 @@ class AppTheme {
   AppTheme({this.backgroundColors, this.frontTextColor, this.backTextColor});
 
   static AppTheme light = AppTheme(backgroundColors: [
-    Color.fromRGBO(0x96, 0xde, 0xda, 1),
-    Color.fromRGBO(0x50, 0xc9, 0xc3, 1)
+    Color.fromRGBO(0x50, 0xc9, 0xc3, 1),
+    Color.fromRGBO(0x27, 0x80, 0x7c, 1)
   ], frontTextColor: Colors.white, backTextColor: Colors.black12);
 
   static AppTheme dark = AppTheme(backgroundColors: [
