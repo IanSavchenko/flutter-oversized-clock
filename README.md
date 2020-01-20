@@ -3,6 +3,8 @@
 This Flutter clock is a submission for 
 [Flutter Clock challenge](https://flutter.dev/clock).
 
+[![Promo video for the clock](http://img.youtube.com/vi/a-tpCA0lbHE/0.jpg)](http://www.youtube.com/watch?v=a-tpCA0lbHE)
+
 ## Idea
 
 I had the vision of the clock from the very beginning 
